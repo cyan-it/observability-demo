@@ -21,6 +21,9 @@ jobs:
       OCTOPUS_SPACE: 'Cyan IT Demo'
 
     steps:
+      - name: Check Out Repository
+        uses: actions/checkout@v4
+
       - name: Login to Octopus Deploy 🐙
         uses: OctopusDeploy/login@v1
         with:
