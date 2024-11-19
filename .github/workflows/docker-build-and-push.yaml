@@ -1,0 +1,60 @@
+name: Docker Build and Push
+
+on:
+  workflow_call:
+    inputs:
+      new_version:
+        required: true
+        type: string
+      configuration:
+        required: true
+        type: string
+      tag_latest:
+        required: true
+        type: string
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Angular Docker image with provenance and SBOM
+        uses: docker/build-push-action@v6
+        with:
+          context: ./DemoWebUi
+          file: ./DemoWebUi/Dockerfile
+          platforms: linux/amd64
+          build-args: |
+            CONFIGURATION=${{ inputs.configuration }}
+          tags: |
+            felixnotka/observability-demo-webui:${{ inputs.new_version }}
+            ${{ inputs.tag_latest == 'true' && 'felixnotka/observability-demo-webui:latest' || '' }}
+          push: true
+          sbom: true
+          provenance: mode=max
+
+      - name: Build and push .NET Core Backend Docker image with provenance and SBOM
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./DemoApi/Dockerfile
+          platforms: linux/amd64
+          tags: |
+            felixnotka/observability-demo-api:${{ inputs.new_version }}
+            ${{ inputs.tag_latest == 'true' && 'felixnotka/observability-demo-api:latest' || '' }}
+          push: true
+          sbom: true
+          provenance: mode=max
+
