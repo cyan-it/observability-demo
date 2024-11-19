@@ -14,4 +14,8 @@ variable "NAMESPACE" {
     value "observability-demo-production" {
         environment = ["production"]
     }
+
+    value "#{Octopus.Action[GetFN].Output.FeatureName}" {
+        description = ""
+    }
 }
