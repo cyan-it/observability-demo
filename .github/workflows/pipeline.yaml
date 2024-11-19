@@ -1,0 +1,30 @@
+name: pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - release/**
+      - feature/**
+
+jobs:
+  determine-version:
+    uses: ./.github/workflows/determine-version.yaml
+
+  docker-build-and-push:
+    needs: determine-version
+    uses: ./.github/workflows/docker-build-and-push.yaml
+    secrets: inherit
+    with:
+      new_version: ${{ needs.determine-version.outputs.new_version }}
+      configuration: ${{ needs.determine-version.outputs.configuration }}
+      tag_latest: ${{ needs.determine-version.outputs.tag_latest }}
+
+  create-octopus-release:
+    needs: [docker-build-and-push,determine-version]
+    uses: ./.github/workflows/create-octopus-release.yaml
+    secrets: inherit
+    with:
+      new_version: ${{ needs.determine-version.outputs.new_version }}
+      configuration: ${{ needs.determine-version.outputs.configuration }}

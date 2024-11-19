@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-web-ui
+  labels:
+    app: demo-web-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-web-ui
+  template:
+    metadata:
+      labels:
+        app: demo-web-ui
+    spec:
+      containers:
+        - name: demo-web-ui
+          image: demo-web-ui:latest
+          ports:
+            - containerPort: 80
+          imagePullPolicy: IfNotPresent
+          restartPolicy: Always

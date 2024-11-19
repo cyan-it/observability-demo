@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  labels:
+    app: prometheus
+data:
+  prometheus.yml: |
+    # Paste the content of ./config/prometheus/prometheus.yml here
+  rules: |
+    # Paste the content of ./config/prometheus/rules/*.yml here if needed
