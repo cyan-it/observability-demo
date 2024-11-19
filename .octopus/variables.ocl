@@ -1,0 +1,17 @@
+variable "NAMESPACE" {
+    value "observability-demo-development" {
+        environment = ["development"]
+    }
+
+    value "observability-demo-test" {
+        environment = ["test"]
+    }
+
+    value "observability-demo-staging" {
+        environment = ["staging"]
+    }
+
+    value "observability-demo-production" {
+        environment = ["production"]
+    }
+}
