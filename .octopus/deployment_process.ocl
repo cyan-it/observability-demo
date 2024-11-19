@@ -30,7 +30,7 @@ step "deploy-kubernetes-yaml" {
             Octopus.Action.Kubernetes.ResourceStatusCheck = "True"
             Octopus.Action.Kubernetes.ServerSideApply.Enabled = "True"
             Octopus.Action.Kubernetes.ServerSideApply.ForceConflicts = "True"
-            Octopus.Action.KubernetesContainers.CustomResourceYamlFileName = "*"
+            Octopus.Action.KubernetesContainers.CustomResourceYamlFileName = "*/*.yaml"
             Octopus.Action.KubernetesContainers.Namespace = "#{NAMESPACE}"
             Octopus.Action.Package.DownloadOnTentacle = "False"
             Octopus.Action.Package.FeedId = "octopus-server-built-in"
