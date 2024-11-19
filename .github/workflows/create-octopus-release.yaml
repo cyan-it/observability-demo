@@ -25,7 +25,7 @@ jobs:
         uses: OctopusDeploy/login@v1
         with:
           server: ${{ secrets.SERVER }}
-          service_account_id: GitHub Action Observability Demo
+          service_account_id: 9ccab79d-b58a-49b2-a636-3b7c8f18855e
 
       - name: Create a Zip package 🐙
         uses: OctopusDeploy/create-zip-package-action@v3
