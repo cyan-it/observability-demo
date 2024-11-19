@@ -15,3 +15,38 @@ step "run-a-script" {
         worker_pool_variable = ""
     }
 }
+
+step "deploy-kubernetes-yaml" {
+    name = "Deploy Kubernetes YAML"
+    properties = {
+        Octopus.Action.TargetRoles = "strato-k8s-felix"
+    }
+
+    action {
+        action_type = "Octopus.KubernetesDeployRawYaml"
+        channels = ["default"]
+        properties = {
+            Octopus.Action.Kubernetes.DeploymentTimeout = "180"
+            Octopus.Action.Kubernetes.ResourceStatusCheck = "True"
+            Octopus.Action.Kubernetes.ServerSideApply.Enabled = "True"
+            Octopus.Action.Kubernetes.ServerSideApply.ForceConflicts = "True"
+            Octopus.Action.KubernetesContainers.CustomResourceYamlFileName = "manifests/"
+            Octopus.Action.KubernetesContainers.Namespace = "#{NAMESPACE}"
+            Octopus.Action.Package.DownloadOnTentacle = "False"
+            Octopus.Action.Package.FeedId = "octopus-server-built-in"
+            Octopus.Action.Package.JsonConfigurationVariablesTargets = "**/*.{yml,yaml}"
+            Octopus.Action.Package.PackageId = "Observability-Demo"
+            Octopus.Action.Script.ScriptSource = "Package"
+        }
+        worker_pool = "hosted-ubuntu"
+
+        packages {
+            acquisition_location = "Server"
+            feed = "octopus-server-built-in"
+            package_id = "Observability-Demo"
+            properties = {
+                SelectionMode = "immediate"
+            }
+        }
+    }
+}
