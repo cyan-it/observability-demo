@@ -37,4 +37,3 @@ spec:
             - name: OTEL_SERVICE_NAME
               value: "demo-api"
           imagePullPolicy: IfNotPresent
-          restartPolicy: Always
