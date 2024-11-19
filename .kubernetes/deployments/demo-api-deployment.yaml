@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-api
+  labels:
+    app: demo-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-api
+  template:
+    metadata:
+      labels:
+        app: demo-api
+    spec:
+      containers:
+        - name: demo-api
+          image: demo-api:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Development"
+            - name: ASPNETCORE_URLS
+              value: "http://*:8080"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: otelcol-config
+                  key: OTEL_EXPORTER_OTLP_ENDPOINT
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              valueFrom:
+                secretKeyRef:
+                  name: otelcol-config
+                  key: OTEL_RESOURCE_ATTRIBUTES
+            - name: OTEL_SERVICE_NAME
+              value: "demo-api"
+          imagePullPolicy: IfNotPresent
+          restartPolicy: Always

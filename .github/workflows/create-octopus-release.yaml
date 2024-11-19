@@ -1,0 +1,54 @@
+name: Create Octopus Release
+
+on:
+  workflow_call:
+    inputs:
+      new_version:
+        required: true
+        type: string
+      configuration:
+        required: true
+        type: string
+
+jobs:
+  octopus-deployment:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write # Required by login action
+
+    env:
+      OCTOPUS_SPACE: 'Cyan IT Demo'
+
+    steps:
+      - name: Login to Octopus Deploy 🐙
+        uses: OctopusDeploy/login@v1
+        with:
+          server: ${{ secrets.SERVER }}
+          service_account_id: a1a1a1a1-b2b2-c3c3-d4d4-e5e5e5e5e5e5
+
+      - name: Create a Zip package 🐙
+        uses: OctopusDeploy/create-zip-package-action@v3
+        with:
+          package_id: 'Observability-Demo'
+          version: ${{ inputs.new_version }}
+          output_folder: './packages/'
+          base_path: './.kubernetes/'
+          files: |
+            **/*.*
+
+      - name: Push a package to Octopus Deploy 🐙
+        uses: OctopusDeploy/push-package-action@v3
+        with:
+          packages: |
+            packages/**/*.zip
+
+      - name: Use the Package in a Release 🎉
+        uses: OctopusDeploy/create-release-action@v3
+        with:
+          project: 'Observability Demo'
+          release_number: ${{ inputs.new_version }}
+          git_ref: ${{ github.ref }}
+          git_commit: ${{ github.sha }}
+          packages: |
+            'Observability-Demo:${{ inputs.new_version }}'
