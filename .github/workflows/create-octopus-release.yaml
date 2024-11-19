@@ -16,6 +16,7 @@ jobs:
 
     permissions:
       id-token: write # Required by login action
+      contents: read # Required to still do the checkout
 
     env:
       OCTOPUS_SPACE: 'Cyan IT Demo'
