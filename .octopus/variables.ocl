@@ -15,3 +15,21 @@ variable "NAMESPACE" {
         environment = ["production"]
     }
 }
+
+variable "NODE_PORT_WEBUI" {
+    value "32000" {
+        environment = ["development"]
+    }
+
+    value "32100" {
+        environment = ["test"]
+    }
+
+    value "32200" {
+        environment = ["staging"]
+    }
+
+    value "32300" {
+        environment = ["production"]
+    }
+}
