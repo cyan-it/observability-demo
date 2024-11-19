@@ -6,7 +6,7 @@ step "deploy-kubernetes-yaml" {
 
     action {
         action_type = "Octopus.KubernetesDeployRawYaml"
-        channels = ["default"]
+        channels = ["development"]
         properties = {
             Octopus.Action.Kubernetes.DeploymentTimeout = "180"
             Octopus.Action.Kubernetes.ResourceStatusCheck = "True"
