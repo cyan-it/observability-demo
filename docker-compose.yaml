@@ -1,0 +1,96 @@
+services:
+  demo-api:
+    container_name: demo-api
+    build:
+      context: ./DemoApi
+      dockerfile: Dockerfile
+    ports:
+      - "5028:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:8080
+      - OTEL_EXPORTER_OTLP_ENDPOINT
+      - OTEL_RESOURCE_ATTRIBUTES
+      - OTEL_SERVICE_NAME=demo-api
+    restart: unless-stopped
+
+  demo-web-ui:
+    container_name: demo-web-ui
+    build:
+      context: ./DemoWebUi
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./config/prometheus/rules:/etc/prometheus/rules
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./config/grafana/dashboards:/var/lib/grafana/dashboards
+      - ./config/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./config/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+    environment:
+      - GF_SECURITY_ADMIN_USER=username
+      - GF_SECURITY_ADMIN_PASSWORD=password
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  tempo:
+    image: grafana/tempo
+    container_name: tempo
+    volumes:
+      - tempo-data:/var/tempo
+      - ./config/tempo/tempo.yaml:/etc/tempo.yaml
+    command:
+      - "-config.file=/etc/tempo.yaml"
+    ports:
+      - "3200" # tempo
+      - "4317" # otlp grpc
+      - "4318" # otlp http
+    restart: unless-stopped
+
+  loki:
+    image: grafana/loki
+    container_name: loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./config/loki/loki.yaml:/etc/loki/loki.yaml:ro
+    command: -config.file=/etc/loki/loki.yaml
+    restart: unless-stopped
+
+  otelcol:
+    image: otel/opentelemetry-collector-contrib
+    container_name: otelcol
+    command: [--config=/etc/otel-collector.yaml]
+    volumes:
+      - ./config/otel-collector/otel-collector.yaml:/etc/otel-collector.yaml
+    ports:
+      - "4317:4317" # OTLP gRPC receiver
+      - "4318:4318" # OTLP http receiver
+    restart: unless-stopped
+
+volumes:
+  prometheus-data:
+    labels:
+      app: "prometheus"
+  grafana-data:
+    labels:
+      app: "grafana"
+  tempo-data:
+    labels:
+      app: "tempo"

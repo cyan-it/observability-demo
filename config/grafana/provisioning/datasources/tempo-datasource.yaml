@@ -1,0 +1,40 @@
+apiVersion: 1
+
+datasources:
+  - name: Tempo
+    type: tempo
+    uid: tempo
+    url: http://tempo:3200
+    access: proxy
+    basicAuth: false
+    jsonData:
+      tracesToLogsV2:
+        datasourceUid: "loki"
+        spanStartTimeShift: "1h"
+        spanEndTimeShift: "-1h"
+        tags: ["job", "instance"]
+        filterByTraceID: false
+        filterBySpanID: false
+        customQuery: true
+        query: 'method="${__span.tags.method}"'
+      tracesToMetrics:
+        datasourceUid: "prometheus"
+        spanStartTimeShift: "1h"
+        spanEndTimeShift: "-1h"
+        tags: [{ key: "service.name", value: "service" }, { key: "job" }]
+        queries:
+          - name: "Sample query"
+            query: "sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))"
+      serviceMap:
+        datasourceUid: "prometheus"
+      nodeGraph:
+        enabled: true
+      search:
+        hide: false
+      traceQuery:
+        timeShiftEnabled: true
+        spanStartTimeShift: "1h"
+        spanEndTimeShift: "-1h"
+      spanBar:
+        type: "Tag"
+        tag: "http.path"

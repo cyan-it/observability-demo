@@ -1,0 +1,84 @@
+<!-- app.component.html -->
+<router-outlet></router-outlet>
+<div class="body">
+  <img class="logo" src="../assets/img/CyanIT_white.png">
+
+  <mat-card class="app-container">
+    <mat-card-header>
+      <mat-card-title>
+        <h1 class="headline">{{ title }}</h1>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngFor="let endpoint of endpoints" class="button-row">
+        <button mat-raised-button (click)="callService(endpoint)">{{ endpoint.label }}</button>
+        <span class="icon"
+              [ngClass]="{'green-text': endpoint.status === 'ok', 'red-text': endpoint.status === 'error'}">
+                {{ endpoint.status === 'ok' ? '✔️' : endpoint.status === 'error' ? '❌' : '' }}
+            </span>
+      </div>
+      <div [style.background-color]="responseColor" class="response-box">
+        {{ responseMessage }}
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="explanation-card">
+    <mat-card-header>
+      <mat-card-title>
+        Erklärung:
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-content><p>Mit diesen Buttons können die Endpunkte der "demo-api" aufgerufen werden und folgendes
+        Verhalten ausgelöst werden:</p></mat-card-content>
+
+      <ul>
+        <li><strong>Rückgabewahrscheinlichkeiten pro Click:</strong>
+          <ul>
+            <li>50 %: StatusCode 200.</li>
+            <li>40 %: StatusCode der angeklickten Schaltfläche.</li>
+            <li>10 %: StatusCode 500 (Anwendungsfehler).</li>
+          </ul>
+        </li>
+      </ul>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-accordion class="link-accordion">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Links zur Doukmentation:
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <p>
+        <a href="https://opentelemetry.io/docs/">Open Telemetry Documentation</a>
+      </p>
+      <p>
+        <a href="https://opentelemetry.io/docs/languages/net/">Open Telemetry .NET Documentation</a>
+      </p>
+      <p>
+        <a href="https://opentelemetry.io/docs/languages/js/">Open Telemetry JavaScript Documentation</a>
+      </p>
+      <p>
+        <a href="https://opentelemetry.io/docs/collector/">Open Telemetry Collector</a>
+      </p>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <div class="contact-information">
+    <h2>Kontaktdaten:</h2>
+    <p>
+      Cyan IT GmbH
+      <br>
+      Gewerbering 3
+      <br>
+      94161 Ruderting
+      <br>
+      Deutschland
+    </p>
+    <a style="color: white" href="mailto:info@cyan-it.de?subject=Anfrage%20%C3%BCber%20Website">{{ "info@cyan-it.de" }}</a>
+  </div>
+
+</div>
