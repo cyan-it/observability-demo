@@ -27,13 +27,8 @@ spec:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               valueFrom:
                 secretKeyRef:
-                  name: otelcol-config
+                  name: otelcol-secrets
                   key: OTEL_EXPORTER_OTLP_ENDPOINT
-            - name: OTEL_RESOURCE_ATTRIBUTES
-              valueFrom:
-                secretKeyRef:
-                  name: otelcol-config
-                  key: OTEL_RESOURCE_ATTRIBUTES
             - name: OTEL_SERVICE_NAME
               value: "demo-api"
           imagePullPolicy: IfNotPresent
