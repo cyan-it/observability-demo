@@ -1,8 +1,4 @@
 variable "NAMESPACE" {
-    value "observability-demo-development" {
-        environment = ["development"]
-    }
-
     value "observability-demo-test" {
         environment = ["test"]
     }
@@ -13,6 +9,10 @@ variable "NAMESPACE" {
 
     value "observability-demo-production" {
         environment = ["production"]
+    }
+
+    value "observability-demo-#{Octopus.Action[Get Feature Name from Release Number].Output.FeatureName}" {
+        environment = ["development"]
     }
 }
 
