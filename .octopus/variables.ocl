@@ -37,3 +37,19 @@ variable "PACKAGE_CONFIGURATION" {
         channel = ["development"]
     }
 }
+
+variable "DOMAIN" {
+    value "obs.testingstuff.site" {
+        environment = ["production"]
+    }
+
+    value "obs-test.testingstuff.site" {
+        environment = ["test"]
+    }
+
+    value "obs-staging.testingstuff.site" {
+        environment = ["staging"]
+    }
+
+    value "obs-#{Octopus.Action[Get Feature Name from Release Number].Output.FeatureName}.testingstuff.site" {}
+}
