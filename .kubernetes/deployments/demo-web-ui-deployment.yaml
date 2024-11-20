@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: demo-web-ui
-  labels:
-    app: demo-web-ui
 spec:
   replicas: 1
   selector:
@@ -14,9 +12,26 @@ spec:
       labels:
         app: demo-web-ui
     spec:
+      initContainers:
+        - name: config-injector
+          image: busybox
+          command: ['sh', '-c', 'cp /config/runtime-config.js /usr/share/nginx/html/runtime-config.js']
+          volumeMounts:
+            - name: runtime-config
+              mountPath: /config
+            - name: nginx-html
+              mountPath: /usr/share/nginx/html
       containers:
         - name: demo-web-ui
           image: felixnotka/observability-demo-webui:#{RELEASE_NUMBER}
           ports:
             - containerPort: 80
-          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: nginx-html
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: runtime-config
+          configMap:
+            name: demo-web-ui-config
+        - name: nginx-html
+          emptyDir: {}

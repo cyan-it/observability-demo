@@ -9,5 +9,6 @@ RUN npm run build
 FROM nginx:alpine
 
 COPY --from=build-stage /app/dist/demo-web-ui/browser /usr/share/nginx/html
+COPY runtime-config.js /usr/share/nginx/html/runtime-config.js
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

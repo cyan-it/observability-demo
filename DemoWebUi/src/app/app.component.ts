@@ -16,10 +16,11 @@ import {MatExpansionModule} from '@angular/material/expansion';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnDestroy {
-  title = 'Otel Demo';
+  declare window: any;
+  title = 'Observability Demo';
   responseMessage = '';
   responseColor = 'green';
-  baseUrl = "http://localhost:5028";
+  baseUrl = this.getBaseUrl();
   private subscriptions: Subscription[] = [];
 
   endpoints = [
@@ -31,6 +32,10 @@ export class AppComponent implements OnDestroy {
   ];
 
   constructor(private apiService: ApiService) {
+  }
+
+  private getBaseUrl(): string {
+    return (window as any).__env?.baseUrl || 'https://localhost:5028/api';
   }
 
   callService(endpoint: any) {

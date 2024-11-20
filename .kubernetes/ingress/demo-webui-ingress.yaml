@@ -1,13 +1,13 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  name: observability-demo-ingress-ui
   annotations:
     acme.cert-manager.io/http01-edit-in-place: "true"
     cert-manager.io/cluster-issuer: letsencrypt-staging
     cert-manager.io/issue-temporary-certificate: "true"
     nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: 100m
-  name: observability-demo-ingress-ui
 spec:
   ingressClassName: nginx
   rules:
@@ -24,4 +24,4 @@ spec:
   tls:
     - hosts:
         - #{DOMAIN}
-      secretName: observability-demo-web-ui#{CONFIGURATION}-tls
+      secretName: observability-demo-tls
