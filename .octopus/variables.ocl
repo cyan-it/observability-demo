@@ -1,0 +1,71 @@
+variable "NAMESPACE" {
+    value "observability-demo-test" {
+        environment = ["test"]
+    }
+
+    value "observability-demo-staging" {
+        environment = ["staging"]
+    }
+
+    value "observability-demo-production" {
+        environment = ["production"]
+    }
+
+    value "observability-demo-#{Octopus.Action[GetFN].Output.FeatureName}" {
+        environment = ["development"]
+    }
+}
+
+variable "RELEASE_NUMBER" {
+    value "#{Octopus.Release.Number}" {}
+}
+
+variable "DOMAIN" {
+    value "obs.testingstuff.site" {
+        environment = ["production"]
+    }
+
+    value "obs-test.testingstuff.site" {
+        environment = ["test"]
+    }
+
+    value "obs-staging.testingstuff.site" {
+        environment = ["staging"]
+    }
+
+    value "obs-#{Octopus.Action[GetFN].Output.FeatureName}.testingstuff.site" {
+        channel = ["development"]
+        environment = ["development"]
+    }
+}
+
+variable "WGET_PARAM" {
+    value "-q" {}
+}
+
+variable "BASE_DOMAIN" {
+    value "testingstuff.site" {}
+}
+
+variable "IP_INGRESS_CONTROLLER" {
+    value "146.190.206.86" {}
+}
+
+variable "CONFIGURATION" {
+    value "-test" {
+        environment = ["test"]
+    }
+
+    value "-staging" {
+        environment = ["staging"]
+    }
+
+    value "" {
+        environment = ["production"]
+    }
+
+    value "-#{Octopus.Action[GetFN].Output.FeatureName}" {
+        channel = ["development"]
+        environment = ["development"]
+    }
+}

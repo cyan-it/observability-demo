@@ -1,0 +1,59 @@
+name: Determine Version
+
+on:
+  workflow_call:
+    outputs:
+      new_version:
+        description: 'The determined version'
+        value: ${{ jobs.determine-version.outputs.new_version }}
+      configuration:
+        description: 'The configuration value'
+        value: ${{ jobs.determine-version.outputs.configuration }}
+      tag_latest:
+        description: 'Whether to tag as latest'
+        value: ${{ jobs.determine-version.outputs.tag_latest }}
+
+jobs:
+  determine-version:
+    runs-on: ubuntu-latest
+    outputs:
+      new_version: ${{ steps.version.outputs.new_version }}
+      configuration: ${{ steps.version.outputs.configuration }}
+      tag_latest: ${{ steps.version.outputs.tag_latest }}
+
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v4
+
+      - name: Determine Version
+        id: version
+        run: |
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          BASE_VERSION=$(jq -r '.Major' version.json).$(jq -r '.Minor' version.json).$(jq -r '.Patch' version.json)
+          BUILD_NUMBER=$(date +%s)
+
+          if [[ "$BRANCH_NAME" == "main" ]]; then
+            NEW_VERSION=$BASE_VERSION
+            CONFIGURATION=stable
+            TAG_LATEST=true
+          elif [[ "$BRANCH_NAME" == "develop" ]]; then
+            NEW_VERSION="$BASE_VERSION-alpha.$BUILD_NUMBER"
+            CONFIGURATION=alpha
+            TAG_LATEST=false
+          elif [[ "$BRANCH_NAME" == release/* ]]; then
+            NEW_VERSION="$BASE_VERSION-beta.$BUILD_NUMBER"
+            CONFIGURATION=beta
+            TAG_LATEST=false
+          elif [[ "$BRANCH_NAME" == feature/* ]]; then
+            FEATURE_NAME=${BRANCH_NAME#feature/}
+            NEW_VERSION="$BASE_VERSION-feature-$FEATURE_NAME.$BUILD_NUMBER"
+            CONFIGURATION=feature-$FEATURE_NAME
+            TAG_LATEST=false
+          else
+            CONFIGURATION=prod
+            TAG_LATEST=false
+          fi
+
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "configuration=$CONFIGURATION" >> $GITHUB_OUTPUT
+          echo "tag_latest=$TAG_LATEST" >> $GITHUB_OUTPUT

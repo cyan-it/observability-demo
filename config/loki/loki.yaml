@@ -39,6 +39,5 @@ schema_config:
         period: 24h
 
 
-# Grafana Labs Reporting
 analytics:
   reporting_enabled: false
