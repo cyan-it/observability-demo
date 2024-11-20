@@ -50,3 +50,22 @@ variable "BASE_DOMAIN" {
 variable "IP_INGRESS_CONTROLLER" {
     value "146.190.206.86" {}
 }
+
+variable "CONFIGURATION" {
+    value "-test" {
+        environment = ["test"]
+    }
+
+    value "-staging" {
+        environment = ["staging"]
+    }
+
+    value "" {
+        environment = ["production"]
+    }
+
+    value "-#{Octopus.Action[GetFN].Output.FeatureName}" {
+        channel = ["development"]
+        environment = ["development"]
+    }
+}
