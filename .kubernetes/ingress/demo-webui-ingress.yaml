@@ -1,8 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: cp-ingress-ui
-  namespace: cp-#{NAMESPACE}
+  name: observability-demo-ingress-ui
   annotations:
     #    cert-manager.io/cluster-issuer: "letsencrypt-prod"
     #    cert-manager.io/issue-temporary-certificate: "true"
