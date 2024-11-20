@@ -47,7 +47,7 @@ jobs:
           elif [[ "$BRANCH_NAME" == feature/* ]]; then
             FEATURE_NAME=${BRANCH_NAME#feature/}
             NEW_VERSION="$BASE_VERSION-feature-$FEATURE_NAME.$BUILD_NUMBER"
-            CONFIGURATION=feature-$FEATURE_NAME.$BUILD_NUMBER
+            CONFIGURATION=feature-$FEATURE_NAME
             TAG_LATEST=false
           else
             CONFIGURATION=prod
