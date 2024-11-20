@@ -56,7 +56,7 @@ step "deploy-kubernetes-yaml" {
             Octopus.Action.Package.DownloadOnTentacle = "False"
             Octopus.Action.Package.FeedId = "octopus-server-built-in"
             Octopus.Action.Package.JsonConfigurationVariablesTargets = "**/*.{yml,yaml}"
-            Octopus.Action.Package.PackageId = "Observability-Demo-alpha"
+            Octopus.Action.Package.PackageId = "Observability-Demo-#{PACKAGE_CONFIGURATION}"
             Octopus.Action.Script.ScriptSource = "Package"
         }
         worker_pool = "hosted-ubuntu"
@@ -64,7 +64,7 @@ step "deploy-kubernetes-yaml" {
         packages {
             acquisition_location = "Server"
             feed = "octopus-server-built-in"
-            package_id = "Observability-Demo-alpha"
+            package_id = "Observability-Demo-#{PACKAGE_CONFIGURATION}"
             properties = {
                 SelectionMode = "immediate"
             }
