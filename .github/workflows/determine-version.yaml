@@ -33,7 +33,7 @@ jobs:
           BUILD_NUMBER=$(date +%s)
 
           if [[ "$BRANCH_NAME" == "main" ]]; then
-            NEW_VERSION=$BASE_VERSION.$BUILD_NUMBER
+            NEW_VERSION=$BASE_VERSION-stable.$BUILD_NUMBER
             CONFIGURATION=stable
             TAG_LATEST=true
           elif [[ "$BRANCH_NAME" == "develop" ]]; then
