@@ -36,8 +36,6 @@ jobs:
           context: ./DemoWebUi
           file: ./DemoWebUi/Dockerfile
           platforms: linux/amd64
-          build-args: |
-            CONFIGURATION=${{ inputs.configuration }}
           tags: |
             felixnotka/observability-demo-webui:${{ inputs.new_version }}
             ${{ inputs.tag_latest == 'true' && 'felixnotka/observability-demo-webui:latest' || '' }}

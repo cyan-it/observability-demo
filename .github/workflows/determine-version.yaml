@@ -34,20 +34,20 @@ jobs:
 
           if [[ "$BRANCH_NAME" == "main" ]]; then
             NEW_VERSION=$BASE_VERSION
-            CONFIGURATION=prod
+            CONFIGURATION=stable
             TAG_LATEST=true
           elif [[ "$BRANCH_NAME" == "develop" ]]; then
             NEW_VERSION="$BASE_VERSION-alpha.$BUILD_NUMBER"
-            CONFIGURATION=dev
+            CONFIGURATION=alpha
             TAG_LATEST=false
           elif [[ "$BRANCH_NAME" == release/* ]]; then
             NEW_VERSION="$BASE_VERSION-beta.$BUILD_NUMBER"
-            CONFIGURATION=prod
+            CONFIGURATION=beta
             TAG_LATEST=false
           elif [[ "$BRANCH_NAME" == feature/* ]]; then
             FEATURE_NAME=${BRANCH_NAME#feature/}
             NEW_VERSION="$BASE_VERSION-feature-$FEATURE_NAME.$BUILD_NUMBER"
-            CONFIGURATION=dev
+            CONFIGURATION=feature-$FEATURE_NAME.$BUILD_NUMBER
             TAG_LATEST=false
           else
             CONFIGURATION=prod

@@ -55,4 +55,4 @@ jobs:
           git_ref: ${{ github.ref }}
           git_commit: ${{ github.sha }}
           packages: |
-            'Observability-Demo:${{ inputs.new_version }}'
+            'Observability-Demo-${{ inputs.configuration }}:${{ inputs.new_version }}'
