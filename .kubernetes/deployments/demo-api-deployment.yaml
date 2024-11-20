@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: demo-api
-          image: felixnotka/observability-demo-api
+          image: felixnotka/observability-demo-api:#{RELEASE_NUMBER}
           ports:
             - containerPort: 8080
           env:

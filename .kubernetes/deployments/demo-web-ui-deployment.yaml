@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: demo-web-ui
-          image: felixnotka/observability-demo-webui
+          image: felixnotka/observability-demo-webui:#{RELEASE_NUMBER}
           ports:
             - containerPort: 80
           imagePullPolicy: IfNotPresent
