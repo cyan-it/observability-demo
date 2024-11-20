@@ -1,3 +1,41 @@
+step "get-feature-name-from-release-number" {
+    name = "Get Feature Name from Release Number"
+    properties = {
+        Octopus.Action.TargetRoles = "strato-k8s-felix"
+    }
+
+    action {
+        action_type = "Octopus.Script"
+        channels = ["development"]
+        environments = ["development"]
+        properties = {
+            Octopus.Action.RunOnServer = "false"
+            Octopus.Action.Script.ScriptBody = <<-EOT
+                # Get the release number from Octopus variable
+                $releaseNumber = $(get_octopusvariable "RELEASE_NUMBER")
+                
+                # Extract the feature name (e.g., 'feature-123')
+                if ($releaseNumber -match '\d+\.\d+\.\d+-(?<featureName>[^.]+)\.\d+') {
+                    $featureName = $matches['featureName']
+                } else {
+                    Write-Error "Failed to extract feature name from RELEASE_NUMBER: $releaseNumber"
+                    exit 1
+                }
+                
+                # Export the extracted feature name as an Octopus variable
+                set_octopusvariable "FeatureName" $featureName
+                
+                # Optional: Print the extracted feature name for debugging purposes
+                Write-Host "Extracted Feature Name: $featureName"
+                
+                EOT
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "PowerShell"
+        }
+        worker_pool_variable = ""
+    }
+}
+
 step "deploy-kubernetes-yaml" {
     name = "Deploy Kubernetes YAML"
     properties = {
