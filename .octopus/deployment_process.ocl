@@ -8,7 +8,6 @@ step "get-feature-name-from-release-number" {
         action_type = "Octopus.Script"
         channels = ["development"]
         environments = ["development"]
-        is_disabled = true
         properties = {
             Octopus.Action.RunOnServer = "false"
             Octopus.Action.Script.ScriptBody = <<-EOT
