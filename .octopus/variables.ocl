@@ -15,3 +15,7 @@ variable "NAMESPACE" {
         environment = ["production"]
     }
 }
+
+variable "RELEASE_NUMBER" {
+    value "#{Octopus.Release.Number}" {}
+}
