@@ -35,7 +35,7 @@ export class AppComponent implements OnDestroy {
   }
 
   private getBaseUrl(): string {
-    return (window as any).__env?.baseUrl || 'https://localhost:5028/api';
+    return (window as any).__env?.baseUrl || 'https://obs.testingstuff.site/api';
   }
 
   callService(endpoint: any) {
