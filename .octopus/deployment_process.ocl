@@ -29,6 +29,7 @@ step "deploy-kubernetes-yaml" {
             properties = {
                 SelectionMode = "immediate"
             }
+            version = "#{Octopus.Release.Number}"
         }
     }
 }
