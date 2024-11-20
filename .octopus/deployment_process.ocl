@@ -1,13 +1,14 @@
-step "get-feature-name-from-release-number" {
-    name = "Get Feature Name from Release Number"
+step "prepare-feature-deployment" {
+    name = "Prepare Feature Deployment"
     properties = {
-        Octopus.Action.TargetRoles = "strato-k8s-felix"
+        Octopus.Action.TargetRoles = "do-k8s-anita"
     }
 
-    action {
+    action "getfn" {
         action_type = "Octopus.Script"
         channels = ["development"]
         environments = ["development"]
+        name = "GetFN"
         properties = {
             Octopus.Action.RunOnServer = "false"
             Octopus.Action.Script.ScriptBody = <<-EOT
@@ -41,6 +42,64 @@ step "get-feature-name-from-release-number" {
             properties = {
                 Extract = "True"
                 Purpose = ""
+                SelectionMode = "immediate"
+            }
+        }
+    }
+
+    action "create-new-namespace" {
+        action_type = "Octopus.Script"
+        channels = ["development"]
+        excluded_environments = ["development"]
+        name = "Create new namespace"
+        properties = {
+            Octopus.Action.EnabledFeatures = "Octopus.Features.SubstituteInFiles"
+            Octopus.Action.Package.DownloadOnTentacle = "False"
+            Octopus.Action.Package.FeedId = "octopus-server-built-in"
+            Octopus.Action.Package.PackageId = "Observability-Demo"
+            Octopus.Action.Script.ScriptFileName = "createNamespace.sh"
+            Octopus.Action.Script.ScriptSource = "Package"
+            Octopus.Action.SubstituteInFiles.TargetFiles = <<-EOT
+                *.sh
+                */*.yaml
+                EOT
+        }
+        worker_pool = "hosted-ubuntu"
+
+        packages {
+            acquisition_location = "Server"
+            feed = "octopus-server-built-in"
+            package_id = "Observability-Demo"
+            properties = {
+                SelectionMode = "immediate"
+            }
+        }
+    }
+
+    action "create-dns-entry-with-doctl" {
+        action_type = "Octopus.Script"
+        channels = ["development"]
+        environments = ["development"]
+        name = "Create DNS entry with doctl"
+        properties = {
+            Octopus.Action.EnabledFeatures = "Octopus.Features.SubstituteInFiles"
+            Octopus.Action.Package.DownloadOnTentacle = "False"
+            Octopus.Action.Package.FeedId = "octopus-server-built-in"
+            Octopus.Action.Package.PackageId = "Observability-Demo"
+            Octopus.Action.Script.ScriptFileName = "createDNSentry.sh"
+            Octopus.Action.Script.ScriptSource = "Package"
+            Octopus.Action.SubstituteInFiles.TargetFiles = <<-EOT
+                *.sh
+                */*.yaml
+                EOT
+        }
+        worker_pool = "hosted-ubuntu"
+
+        packages {
+            acquisition_location = "Server"
+            feed = "octopus-server-built-in"
+            package_id = "Observability-Demo"
+            properties = {
                 SelectionMode = "immediate"
             }
         }

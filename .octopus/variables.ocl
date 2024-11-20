@@ -11,7 +11,7 @@ variable "NAMESPACE" {
         environment = ["production"]
     }
 
-    value "observability-demo-#{Octopus.Action[Get Feature Name from Release Number].Output.FeatureName}" {
+    value "observability-demo-#{Octopus.Action[GetFN].Output.FeatureName}" {
         environment = ["development"]
     }
 }
@@ -20,20 +20,33 @@ variable "RELEASE_NUMBER" {
     value "#{Octopus.Release.Number}" {}
 }
 
-variable "PACKAGE_CONFIGURATION" {
-    value "stable" {
-        channel = ["main"]
+variable "DOMAIN" {
+    value "obs.testingstuff.site" {
+        environment = ["production"]
     }
 
-    value "alpha" {
-        channel = ["test"]
+    value "obs-test.testingstuff.site" {
+        environment = ["test"]
     }
 
-    value "beta" {
-        channel = ["release"]
+    value "obs-staging.testingstuff.site" {
+        environment = ["staging"]
     }
 
-    value "feature-#{Octopus.Action[Get Feature Name from Release Number].Output.FeatureName}" {
+    value "obs-#{Octopus.Action[GetFN].Output.FeatureName}.testingstuff.site" {
         channel = ["development"]
+        environment = ["development"]
     }
+}
+
+variable "WGET_PARAM" {
+    value "-q" {}
+}
+
+variable "BASE_DOMAIN" {
+    value "testingstuff.site" {}
+}
+
+variable "IP_INGRESS_CONTROLLER" {
+    value "146.190.206.86" {}
 }
