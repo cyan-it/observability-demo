@@ -1,10 +1,10 @@
 step "get-feature-name-from-release-number" {
-    name = "Get Feature Name from Release Number"
+    name = "GetFN"
     properties = {
         Octopus.Action.TargetRoles = "strato-k8s-felix"
     }
 
-    action {
+    action "getfn" {
         action_type = "Octopus.Script"
         channels = ["development"]
         environments = ["development"]
