@@ -34,7 +34,7 @@ jobs:
       - name: Create a Zip package 🐙
         uses: OctopusDeploy/create-zip-package-action@v3
         with:
-          package_id: 'Observability-Demo-${{ inputs.configuration }}'
+          package_id: 'Observability-Demo'
           version: ${{ inputs.new_version }}
           output_folder: './packages/'
           base_path: './.kubernetes/'
@@ -52,7 +52,6 @@ jobs:
         with:
           project: 'Observability Demo'
           release_number: ${{ inputs.new_version }}
+          package_version: ${{ inputs.new_version }}
           git_ref: ${{ github.ref }}
           git_commit: ${{ github.sha }}
-          packages: |
-            'Observability-Demo-${{ inputs.configuration }}:${{ inputs.new_version }}'
