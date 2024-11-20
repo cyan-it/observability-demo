@@ -3,10 +3,6 @@ kind: Ingress
 metadata:
   name: observability-demo-ingress-api
   annotations:
-    acme.cert-manager.io/http01-edit-in-place: "true"
-    cert-manager.io/cluster-issuer: letsencrypt-staging
-    cert-manager.io/issue-temporary-certificate: "true"
-    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/x-forwarded-prefix: "/api"
     nginx.ingress.kubernetes.io/proxy-body-size: 30m
@@ -26,7 +22,3 @@ spec:
                   number: 8080
             path: /api(/|$)(.*)
             pathType: Prefix
-  tls:
-    - hosts:
-        - #{DOMAIN}
-      secretName: observability-demo-api#{CONFIGURATION}-tls
