@@ -5,7 +5,6 @@ COPY package*.json /app/
 RUN npm install
 COPY . /app
 RUN npm run build
-COPY /src/runtime-config.js /app/dist/demo-web-zu/browser
 
 FROM nginx:alpine
 
