@@ -11,7 +11,7 @@ variable "NAMESPACE" {
         environment = ["production"]
     }
 
-    value "observability-demo-#{Octopus.Action[Get Feature Name from Release Number].Output.FeatureName}" {
+    value "observability-demo-#{Octopus.Action[GetFN].Output.FeatureName}" {
         environment = ["development"]
     }
 }
@@ -33,7 +33,7 @@ variable "DOMAIN" {
         environment = ["staging"]
     }
 
-    value "obs-#{Octopus.Action[Get Feature Name from Release Number].Output.FeatureName}.testingstuff.site" {
+    value "obs-#{Octopus.Action[GetFN].Output.FeatureName}.testingstuff.site" {
         channel = ["development"]
         environment = ["development"]
     }
