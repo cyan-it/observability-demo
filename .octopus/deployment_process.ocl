@@ -30,7 +30,7 @@ step "get-feature-name-from-release-number" {
                 
                 EOT
             Octopus.Action.Script.ScriptSource = "Inline"
-            Octopus.Action.Script.Syntax = "PowerShell"
+            Octopus.Action.Script.Syntax = "Bash"
         }
         worker_pool_variable = ""
     }
@@ -55,7 +55,7 @@ step "deploy-kubernetes-yaml" {
             Octopus.Action.Package.DownloadOnTentacle = "False"
             Octopus.Action.Package.FeedId = "octopus-server-built-in"
             Octopus.Action.Package.JsonConfigurationVariablesTargets = "**/*.{yml,yaml}"
-            Octopus.Action.Package.PackageId = "Observability-Demo"
+            Octopus.Action.Package.PackageId = "Observability-Demo-#{PACKAGE_CONFIGURATION}"
             Octopus.Action.Script.ScriptSource = "Package"
         }
         worker_pool = "hosted-ubuntu"
@@ -63,7 +63,7 @@ step "deploy-kubernetes-yaml" {
         packages {
             acquisition_location = "Server"
             feed = "octopus-server-built-in"
-            package_id = "Observability-Demo"
+            package_id = "Observability-Demo-#{PACKAGE_CONFIGURATION}"
             properties = {
                 SelectionMode = "immediate"
             }

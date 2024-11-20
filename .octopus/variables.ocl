@@ -19,3 +19,21 @@ variable "NAMESPACE" {
 variable "RELEASE_NUMBER" {
     value "#{Octopus.Release.Number}" {}
 }
+
+variable "PACKAGE_CONFIGURATION" {
+    value "stable" {
+        channel = ["main"]
+    }
+
+    value "alpha" {
+        channel = ["test"]
+    }
+
+    value "beta" {
+        channel = ["release"]
+    }
+
+    value "feature-#{Octopus.Action[Get Feature Name from Release Number].Output.FeatureName}" {
+        channel = ["development"]
+    }
+}
