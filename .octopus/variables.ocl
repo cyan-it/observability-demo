@@ -38,3 +38,15 @@ variable "DOMAIN" {
         environment = ["development"]
     }
 }
+
+variable "WGET_PARAM" {
+    value "-q" {}
+}
+
+variable "BASE_DOMAIN" {
+    value "testingstuff.site" {}
+}
+
+variable "IP_INGRESS_CONTROLLER" {
+    value "146.190.206.86" {}
+}
