@@ -12,21 +12,21 @@ step "get-feature-name-from-release-number" {
             Octopus.Action.RunOnServer = "false"
             Octopus.Action.Script.ScriptBody = <<-EOT
                 # Get the release number from Octopus variable
-                $releaseNumber = $(get_octopusvariable "RELEASE_NUMBER")
+                release_number=$(get_octopusvariable "RELEASE_NUMBER")
                 
-                # Extract the feature name (e.g., 'feature-123')
-                if ($releaseNumber -match '\d+\.\d+\.\d+-(?<featureName>[^.]+)\.\d+') {
-                    $featureName = $matches['featureName']
-                } else {
-                    Write-Error "Failed to extract feature name from RELEASE_NUMBER: $releaseNumber"
+                # Extract the feature name using regex
+                if [[ $release_number =~ ^[0-9]+\.[0-9]+\.[0-9]+-([^.]+)\.[0-9]+$ ]]; then
+                    feature_name="${BASH_REMATCH[1]}"
+                else
+                    echo "Error: Failed to extract feature name from RELEASE_NUMBER: $release_number"
                     exit 1
-                }
+                fi
                 
                 # Export the extracted feature name as an Octopus variable
-                set_octopusvariable "FeatureName" $featureName
+                set_octopusvariable "FeatureName" "$feature_name"
                 
                 # Optional: Print the extracted feature name for debugging purposes
-                Write-Host "Extracted Feature Name: $featureName"
+                echo "Extracted Feature Name: $feature_name"
                 
                 EOT
             Octopus.Action.Script.ScriptSource = "Inline"
