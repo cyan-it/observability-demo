@@ -24,11 +24,11 @@ export class AppComponent implements OnDestroy {
   private subscriptions: Subscription[] = [];
 
   endpoints = [
-    {label: 'Call /ok', url: '/ok', status: null},
-    {label: 'Call /unauthorized', url: '/unauthorized', status: null},
-    {label: 'Call /not-found', url: '/not-found', status: null},
-    {label: 'Call /bad-request', url: '/bad-request', status: null},
-    {label: 'Call /internal-server-error', url: '/internal-server-error', status: null},
+    {label: 'Meh', url: '/ok', status: null},
+    {label: 'It was ok', url: '/unauthorized', status: null},
+    {label: 'I enjoyed it', url: '/not-found', status: null},
+    {label: 'I liked it', url: '/bad-request', status: null},
+    {label: 'I loved it', url: '/internal-server-error', status: null},
   ];
 
   constructor(private apiService: ApiService) {
@@ -42,14 +42,14 @@ export class AppComponent implements OnDestroy {
     const url = this.baseUrl + endpoint.url;
     const subscription = this.apiService.callEndpoint(url).subscribe({
       next: (data) => {
-        this.responseMessage = data;
+        this.responseMessage = 'Thank you for listening <3';
         this.responseColor = 'green';
         endpoint.status = 'ok'; // Update status only on new response
       },
       error: (error) => {
-        this.responseMessage = `Error: Status Code ${error.status || 'Server error'}`;
-        this.responseColor = 'red';
-        endpoint.status = 'error'; // Update status only on new response
+        this.responseMessage = `Thank you for listening <3`;
+        this.responseColor = 'green';
+        endpoint.status = 'ok'; // Update status only on new response
       }
     });
 

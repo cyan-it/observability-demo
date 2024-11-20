@@ -2,8 +2,8 @@ services:
   demo-api:
     container_name: demo-api
     build:
-      context: ./DemoApi
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./DemoApi/Dockerfile
     ports:
       - "5028:8080"
     environment:
