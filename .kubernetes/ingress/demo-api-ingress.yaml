@@ -9,16 +9,17 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
   rules:
     - host: #{DOMAIN}
       http:
         paths:
-          - backend:
+          - path: /api(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
               service:
                 name: demo-api-service
                 port:
                   number: 8080
-            path: /api(/|$)(.*)
-            pathType: Prefix
