@@ -86,7 +86,7 @@ step "prepare-feature-deployment" {
 step "deploy-kubernetes-yaml" {
     name = "Deploy Kubernetes YAML"
     properties = {
-        Octopus.Action.TargetRoles = "do-k8s-anita,strato-k8s-felix"
+        Octopus.Action.TargetRoles = "do-k8s-anita"
     }
 
     action {
